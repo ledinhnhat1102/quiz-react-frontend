@@ -1,7 +1,7 @@
 import { generateToken } from "../../helpers/generateToken";
 import { checkExits, register } from "../../services/usersService";
 import { useNavigate, Link } from "react-router-dom";
-import "./Register.scss";
+import "./Register.scss"; 
 
 function Register() {
     const navigate = useNavigate();
@@ -15,58 +15,96 @@ function Register() {
         const checkExitsEmail = await checkExits("email", email);
         if (checkExitsEmail.length > 0) {
             alert("Email đã tồn tại!");
-        } else {
-            const options = {
-                fullName,
-                email,
-                password,
-                token: generateToken(),
-            };
+            return;
+        }
 
-            const response = await register(options);
-            if (response) {
-                alert("Đăng ký thành công!");
-                navigate("/login");
-            } else {
-                alert("Đăng ký không thành công");
-            }
+        const response = await register({
+            fullName,
+            email,
+            password,
+            token: generateToken(),
+        });
+
+        if (response) {
+            alert("Đăng ký thành công!");
+            navigate("/login");
+        } else {
+            alert("Đăng ký không thành công");
         }
     };
 
     return (
         <div className="auth-container">
             <div className="auth-wrapper">
-                {/* Left Side */}
+                {/* Left Side - Info */}
                 <div className="auth-info-section">
                     <div className="auth-info-content">
                         <div className="info-icon">🎓</div>
                         <h2 className="info-title">Bắt đầu hành trình học tập</h2>
                         <p className="info-description">
-                            Tham gia cùng hơn 10,000 học viên đang nâng cao kỹ năng
+                            Tham gia cùng hơn 10,000 học viên đang nâng cao kỹ năng 
                             lập trình web của họ mỗi ngày.
                         </p>
                     </div>
                 </div>
 
-                {/* Right Side */}
+                {/* Right Side - Form */}
                 <div className="auth-form-section">
                     <div className="auth-form-content">
-                        <h1 className="auth-title">Tạo tài khoản</h1>
+                        <div className="auth-header">
+                            <h1 className="auth-title">Tạo tài khoản</h1>
+                            <p className="auth-subtitle">Đăng ký miễn phí chỉ trong 30 giây</p>
+                        </div>
 
                         <form onSubmit={handleSubmit} className="auth-form">
                             <div className="form-group">
-                                <label>Họ và tên</label>
-                                <input type="text" required />
+                                <label htmlFor="fullname" className="form-label">
+                                    Họ và tên
+                                </label>
+                                <div className="input-wrapper">
+                                    <span className="input-icon">👤</span>
+                                    <input
+                                        type="text"
+                                        id="fullname"
+                                        className="form-input"
+                                        placeholder="Nguyễn Văn A"
+                                        required
+                                    />
+                                </div>
                             </div>
 
                             <div className="form-group">
-                                <label>Email</label>
-                                <input type="email" required />
+                                <label htmlFor="email" className="form-label">
+                                    Email
+                                </label>
+                                <div className="input-wrapper">
+                                    <span className="input-icon">📧</span>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        className="form-input"
+                                        placeholder="your.email@example.com"
+                                        required
+                                    />
+                                </div>
                             </div>
 
                             <div className="form-group">
-                                <label>Mật khẩu</label>
-                                <input type="password" minLength={6} required />
+                                <label htmlFor="password" className="form-label">
+                                    Mật khẩu
+                                </label>
+                                <div className="input-wrapper">
+                                    <span className="input-icon">🔒</span>
+                                    <input
+                                        type="password"
+                                        id="password"
+                                        className="form-input"
+                                        placeholder="Tối thiểu 6 ký tự"
+                                        required
+                                        minLength="6"
+                                    />
+                                </div>
+                                <p className="form-hint">Mật khẩu phải có ít nhất 6 ký tự</p>
                             </div>
 
                             <div className="form-terms">
@@ -74,19 +112,15 @@ function Register() {
                                     <input type="checkbox" required />
                                     <span>
                                         Tôi đồng ý với{" "}
-                                        <Link to="/terms" className="auth-link">
-                                            Điều khoản dịch vụ
-                                        </Link>{" "}
-                                        và{" "}
-                                        <Link to="/privacy" className="auth-link">
-                                            Chính sách bảo mật
-                                        </Link>
+                                        <Link to="/terms">Điều khoản dịch vụ</Link> và{" "}
+                                        <Link to="/privacy">Chính sách bảo mật</Link>
                                     </span>
                                 </label>
                             </div>
 
                             <button type="submit" className="btn-submit">
-                                Tạo tài khoản →
+                                <span>Tạo tài khoản</span>
+                                <span className="btn-arrow">→</span>
                             </button>
                         </form>
 
