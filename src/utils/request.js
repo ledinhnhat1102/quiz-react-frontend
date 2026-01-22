@@ -1,43 +1,53 @@
 // const API_DOMAIN = "http://localhost:3002/";
 const API_DOMAIN = "https://quiz-json-server-api.onrender.com/api";
 
+const buildUrl = (path) => `${API_DOMAIN}/${path}`;
 
 export const get = async (path) => {
-    const response = await fetch(API_DOMAIN + path);
-    const result = await response.json();
-    return result;
-}
-export const post = async(path, options) => {
-    const response = await fetch(API_DOMAIN + path, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(options),
-    });
-    const result = await response.json();
-    return result;
+    const response = await fetch(buildUrl(path));
+    if (!response.ok) {
+        throw new Error("GET request failed");
+    }
+    return response.json();
 };
 
-
-export const del = async(path) =>{
-    const response = await fetch(API_DOMAIN + path,{
-        method: "DELETE",
-    });
-    const result = await response.json();
-    return result;
-}
-
-export  const patch = async (path, options) => {
-    const response = await fetch(API_DOMAIN + path,{
-        method: "PATCH",
+export const post = async (path, options) => {
+    const response = await fetch(buildUrl(path), {
+        method: "POST",
         headers: {
-            Accept: "application/json",
             "Content-Type": "application/json",
         },
         body: JSON.stringify(options),
     });
-    const result = await response.json();
-    return result;
-}
+
+    if (!response.ok) {
+        throw new Error("POST request failed");
+    }
+    return response.json();
+};
+
+export const del = async (path) => {
+    const response = await fetch(buildUrl(path), {
+        method: "DELETE",
+    });
+
+    if (!response.ok) {
+        throw new Error("DELETE request failed");
+    }
+    return response.json();
+};
+
+export const patch = async (path, options) => {
+    const response = await fetch(buildUrl(path), {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(options),
+    });
+
+    if (!response.ok) {
+        throw new Error("PATCH request failed");
+    }
+    return response.json();
+};
