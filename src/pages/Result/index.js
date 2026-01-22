@@ -21,13 +21,13 @@ function Result() {
             let correctCount = 0;
 
             for (let i = 0; i < dataQuestions.length; i++) {
-                // FIX: Sử dụng == thay vì === để so sánh không phân biệt kiểu
-                const userAnswer = dataAnswers.answers.find(item => item.questionId == dataQuestions[i].id);
+                // FIX: Sử dụng === thay vì ==== để so sánh không phân biệt kiểu
+                const userAnswer = dataAnswers.answers.find(item => item.questionId === dataQuestions[i].id);
                 
-                // FIX: Sử dụng == thay vì === và kiểm tra answer không phải -1
+                // FIX: Sử dụng === thay vì ==== và kiểm tra answer không phải -1
                 const isCorrect = userAnswer && 
                                   userAnswer.answer != -1 && 
-                                  dataQuestions[i].correctAnswer == userAnswer.answer;
+                                  dataQuestions[i].correctAnswer === userAnswer.answer;
                 
                 if (isCorrect) correctCount++;
 
@@ -186,9 +186,9 @@ function Result() {
 
                     <div className="questions-list">
                         {dataResult.map((item, index) => {
-                            // FIX: Sử dụng == thay vì === và kiểm tra answer không phải -1
-                            const isCorrect = item.answer != -1 && item.correctAnswer == item.answer;
-                            const isUnanswered = item.answer == -1 || item.answer === undefined;
+                            // FIX: Sử dụng === thay vì ==== và kiểm tra answer không phải -1
+                            const isCorrect = item.answer != -1 && item.correctAnswer === item.answer;
+                            const isUnanswered = item.answer === -1 || item.answer === undefined;
                             
                             return (
                                 <div key={item.id} className={`question-card ${isCorrect ? 'correct' : isUnanswered ? 'unanswered' : 'wrong'}`}>
@@ -221,9 +221,9 @@ function Result() {
 
                                         <div className="answers-list">
                                             {item.answers.map((itemAns, indexAns) => {
-                                                // FIX: Sử dụng == thay vì === để so sánh
-                                                const isUserAnswer = item.answer == indexAns;
-                                                const isCorrectAnswer = item.correctAnswer == indexAns;
+                                                // FIX: Sử dụng === thay vì ==== để so sánh
+                                                const isUserAnswer = item.answer === indexAns;
+                                                const isCorrectAnswer = item.correctAnswer === indexAns;
                                                 const optionLabel = String.fromCharCode(65 + indexAns);
 
                                                 let answerClass = 'answer-item';
