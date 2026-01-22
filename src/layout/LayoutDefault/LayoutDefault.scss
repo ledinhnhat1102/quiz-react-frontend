@@ -1,0 +1,413 @@
+// Variables
+$primary-color: #2563eb;
+$primary-dark: #1e40af;
+$text-primary: #1f2937;
+$text-secondary: #6b7280;
+$text-muted: #9ca3af;
+$bg-primary: #ffffff;
+$bg-secondary: #f9fafb;
+$border-color: #e5e7eb;
+
+.layout-default {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+// ========================================
+// HEADER - Professional & Clean
+// ========================================
+.layout-header {
+  background: $bg-primary;
+  border-bottom: 1px solid $border-color;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  &__container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: $text-primary;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    .logo-icon {
+      font-size: 1.75rem;
+    }
+
+    .logo-text {
+      background: linear-gradient(135deg, $primary-color 0%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex: 1;
+    justify-content: center;
+
+    .nav-link {
+      padding: 10px 20px;
+      text-decoration: none;
+      color: $text-secondary;
+      font-weight: 500;
+      font-size: 0.9375rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      position: relative;
+
+      &:hover {
+        color: $primary-color;
+        background: $bg-secondary;
+      }
+
+      &.active {
+        color: $primary-color;
+        font-weight: 600;
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -1px;
+          left: 20px;
+          right: 20px;
+          height: 3px;
+          background: $primary-color;
+          border-radius: 3px 3px 0 0;
+        }
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    .btn {
+      padding: 10px 24px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9375rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+
+      &-login {
+        color: $text-secondary;
+        background: transparent;
+        border: 1px solid $border-color;
+
+        &:hover {
+          color: $primary-color;
+          border-color: $primary-color;
+          background: $bg-secondary;
+        }
+      }
+
+      &-register {
+        color: white;
+        background: $primary-color;
+        border: 1px solid $primary-color;
+
+        &:hover {
+          background: $primary-dark;
+          border-color: $primary-dark;
+        }
+      }
+
+      &-logout {
+        color: $text-secondary;
+        background: transparent;
+        border: 1px solid $border-color;
+
+        &:hover {
+          color: #ef4444;
+          border-color: #ef4444;
+          background: #fef2f2;
+        }
+      }
+    }
+  }
+}
+
+// ========================================
+// MAIN CONTENT
+// ========================================
+.layout-main {
+  flex: 1;
+  background: $bg-primary;
+}
+
+// ========================================
+// FOOTER - Modern & Informative
+// ========================================
+.layout-footer {
+  background: $text-primary;
+  color: #d1d5db;
+  padding: 60px 20px 30px;
+  margin-top: auto;
+
+  &__container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 50px;
+  margin-bottom: 50px;
+  padding-bottom: 50px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-column {
+  .footer-title {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .footer-logo-icon {
+      font-size: 1.5rem;
+    }
+  }
+
+  .footer-description {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: #9ca3af;
+    margin-bottom: 25px;
+  }
+
+  .footer-heading {
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin-bottom: 12px;
+
+    a {
+      color: #d1d5db;
+      text-decoration: none;
+      font-size: 0.9375rem;
+      transition: color 0.2s ease;
+      display: inline-block;
+
+      &:hover {
+        color: white;
+        transform: translateX(5px);
+      }
+    }
+  }
+}
+
+.footer-social {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+
+  .social-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #d1d5db;
+    transition: all 0.2s ease;
+    text-decoration: none;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    &:hover {
+      background: $primary-color;
+      color: white;
+      transform: translateY(-3px);
+    }
+  }
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding-top: 30px;
+
+  .footer-copyright {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    margin: 0;
+  }
+
+  &-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.875rem;
+
+    a {
+      color: #9ca3af;
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: white;
+      }
+    }
+
+    .separator {
+      color: #6b7280;
+    }
+  }
+}
+
+// ========================================
+// RESPONSIVE DESIGN
+// ========================================
+@media (max-width: 1024px) {
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .layout-header {
+    &__container {
+      height: auto;
+      flex-wrap: wrap;
+      padding: 15px 20px;
+      gap: 15px;
+    }
+
+    &__logo {
+      order: 1;
+    }
+
+    &__actions {
+      order: 2;
+      margin-left: auto;
+    }
+
+    &__nav {
+      order: 3;
+      width: 100%;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 10px;
+      border-top: 1px solid $border-color;
+
+      .nav-link {
+        padding: 8px 16px;
+        font-size: 0.875rem;
+
+        &.active::after {
+          display: none;
+        }
+      }
+    }
+
+    &__actions {
+      .btn {
+        padding: 8px 16px;
+        font-size: 0.875rem;
+      }
+    }
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+
+    &-links {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .layout-header {
+    &__logo {
+      .logo-text {
+        font-size: 1.125rem;
+      }
+    }
+
+    &__actions {
+      gap: 8px;
+
+      .btn {
+        padding: 8px 14px;
+        font-size: 0.8125rem;
+      }
+    }
+  }
+
+  .footer-social {
+    .social-link {
+      width: 36px;
+      height: 36px;
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+}
