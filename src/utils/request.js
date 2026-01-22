@@ -1,5 +1,5 @@
 // const API_DOMAIN = "http://localhost:3002/";
-const API_DOMAIN = "https://quiz-json-server-api.onrender.com";
+const API_DOMAIN = "https://quiz-json-server-api.onrender.com/api";
 
 
 export const get = async (path) => {
