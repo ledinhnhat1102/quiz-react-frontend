@@ -14,26 +14,30 @@ function Result() {
     useEffect(() => {
         const fetchApi = async () => {
             setLoading(true);
+
             const dataAnswers = await getAnswer(params.id);
             const dataQuestions = await getListQuestion(dataAnswers.topicId);
 
-            let resultFinal = [];
             let correctCount = 0;
+            const resultFinal = [];
 
             for (let i = 0; i < dataQuestions.length; i++) {
-                // FIX: Sử dụng === thay vì ==== để so sánh không phân biệt kiểu
-                const userAnswer = dataAnswers.answers.find(item => item.questionId === dataQuestions[i].id);
-                
-                // FIX: Sử dụng === thay vì ==== và kiểm tra answer không phải -1
-                const isCorrect = userAnswer && 
-                                  userAnswer.answer != -1 && 
-                                  dataQuestions[i].correctAnswer === userAnswer.answer;
-                
-                if (isCorrect) correctCount++;
+                const userAnswer = dataAnswers.answers.find(
+                    (item) => item.questionId === dataQuestions[i].id
+                );
+
+                const isCorrect =
+                    userAnswer !== undefined &&
+                    userAnswer.answer !== -1 &&
+                    dataQuestions[i].correctAnswer === userAnswer.answer;
+
+                if (isCorrect) {
+                    correctCount += 1;
+                }
 
                 resultFinal.push({
                     ...dataQuestions[i],
-                    ...userAnswer
+                    ...userAnswer,
                 });
             }
 
@@ -41,7 +45,8 @@ function Result() {
             setScore(correctCount);
             setTotalQuestions(dataQuestions.length);
             setLoading(false);
-        }
+        };
+
         fetchApi();
     }, [params.id]);
 
@@ -59,36 +64,35 @@ function Result() {
     const percentage = Math.round((score / totalQuestions) * 100);
     const isPassed = percentage >= 70;
 
-    // Determine performance level
-    let performanceLevel = '';
-    let performanceEmoji = '';
-    let performanceMessage = '';
+    let performanceLevel = "";
+    let performanceEmoji = "";
+    let performanceMessage = "";
 
     if (percentage >= 90) {
-        performanceLevel = 'Xuất sắc';
-        performanceEmoji = '🏆';
-        performanceMessage = 'Tuyệt vời! Bạn đã thành thạo chủ đề này!';
+        performanceLevel = "Xuất sắc";
+        performanceEmoji = "🏆";
+        performanceMessage = "Tuyệt vời! Bạn đã thành thạo chủ đề này!";
     } else if (percentage >= 80) {
-        performanceLevel = 'Rất tốt';
-        performanceEmoji = '🌟';
-        performanceMessage = 'Làm tốt lắm! Bạn đã nắm vững kiến thức!';
+        performanceLevel = "Rất tốt";
+        performanceEmoji = "🌟";
+        performanceMessage = "Làm tốt lắm! Bạn đã nắm vững kiến thức!";
     } else if (percentage >= 70) {
-        performanceLevel = 'Tốt';
-        performanceEmoji = '✅';
-        performanceMessage = 'Bạn đã đạt yêu cầu! Tiếp tục phát huy nhé!';
+        performanceLevel = "Tốt";
+        performanceEmoji = "✅";
+        performanceMessage = "Bạn đã đạt yêu cầu! Tiếp tục phát huy nhé!";
     } else if (percentage >= 50) {
-        performanceLevel = 'Khá';
-        performanceEmoji = '📚';
-        performanceMessage = 'Bạn cần ôn lại một số kiến thức!';
+        performanceLevel = "Khá";
+        performanceEmoji = "📚";
+        performanceMessage = "Bạn cần ôn lại một số kiến thức!";
     } else {
-        performanceLevel = 'Cần cố gắng';
-        performanceEmoji = '💪';
-        performanceMessage = 'Đừng nản! Hãy thử lại để cải thiện kết quả!';
+        performanceLevel = "Cần cố gắng";
+        performanceEmoji = "💪";
+        performanceMessage = "Đừng nản! Hãy thử lại để cải thiện kết quả!";
     }
 
     return (
         <div className="result-container">
-            {/* Header with Score */}
+            {/* Header */}
             <div className="result-header">
                 <div className="result-header-content">
                     <div className="breadcrumb">
@@ -105,7 +109,7 @@ function Result() {
                         <div className="score-emoji">{performanceEmoji}</div>
                         <h1 className="score-title">{performanceLevel}</h1>
                         <p className="score-message">{performanceMessage}</p>
-                        
+
                         <div className="score-display">
                             <div className="score-circle">
                                 <svg viewBox="0 0 200 200">
@@ -134,7 +138,7 @@ function Result() {
                                     <span className="score-unit">%</span>
                                 </div>
                             </div>
-                            
+
                             <div className="score-details">
                                 <div className="detail-item correct">
                                     <div className="detail-icon">✓</div>
@@ -143,13 +147,17 @@ function Result() {
                                         <div className="detail-label">Câu đúng</div>
                                     </div>
                                 </div>
+
                                 <div className="detail-item wrong">
                                     <div className="detail-icon">✗</div>
                                     <div className="detail-content">
-                                        <div className="detail-number">{totalQuestions - score}</div>
+                                        <div className="detail-number">
+                                            {totalQuestions - score}
+                                        </div>
                                         <div className="detail-label">Câu sai</div>
                                     </div>
                                 </div>
+
                                 <div className="detail-item total">
                                     <div className="detail-icon">∑</div>
                                     <div className="detail-content">
@@ -162,122 +170,66 @@ function Result() {
 
                         <div className="action-buttons">
                             <Link to="/topic" className="btn btn-primary">
-                                <span>🏠</span>
-                                Về trang chủ đề
+                                🏠 Về trang chủ đề
                             </Link>
                             <Link to="/answers" className="btn btn-secondary">
-                                <span>📊</span>
-                                Xem lịch sử
+                                📊 Xem lịch sử
                             </Link>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Questions Review */}
+            {/* Review */}
             <div className="result-content">
                 <div className="result-content-inner">
-                    <div className="section-header">
-                        <h2 className="section-title">Xem lại đáp án chi tiết</h2>
-                        <p className="section-subtitle">
-                            Đánh dấu những câu sai để ôn tập lại nhé!
-                        </p>
-                    </div>
-
                     <div className="questions-list">
                         {dataResult.map((item, index) => {
-                            // FIX: Sử dụng === thay vì ==== và kiểm tra answer không phải -1
-                            const isCorrect = item.answer != -1 && item.correctAnswer === item.answer;
-                            const isUnanswered = item.answer === -1 || item.answer === undefined;
-                            
+                            const isCorrect =
+                                item.answer !== -1 &&
+                                item.answer !== undefined &&
+                                item.correctAnswer === item.answer;
+
+                            const isUnanswered =
+                                item.answer === -1 || item.answer === undefined;
+
                             return (
-                                <div key={item.id} className={`question-card ${isCorrect ? 'correct' : isUnanswered ? 'unanswered' : 'wrong'}`}>
-                                    <div className="question-header">
-                                        <div className="question-number-badge">
-                                            <span className="badge-number">Câu {index + 1}</span>
-                                            <span className={`badge-status ${isCorrect ? 'status-correct' : isUnanswered ? 'status-unanswered' : 'status-wrong'}`}>
-                                                {isCorrect ? (
-                                                    <>
-                                                        <span className="status-icon">✓</span>
-                                                        Đúng
-                                                    </>
-                                                ) : isUnanswered ? (
-                                                    <>
-                                                        <span className="status-icon">○</span>
-                                                        Chưa trả lời
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <span className="status-icon">✗</span>
-                                                        Sai
-                                                    </>
-                                                )}
-                                            </span>
-                                        </div>
-                                    </div>
+                                <div
+                                    key={item.id}
+                                    className={`question-card ${
+                                        isCorrect
+                                            ? "correct"
+                                            : isUnanswered
+                                            ? "unanswered"
+                                            : "wrong"
+                                    }`}
+                                >
+                                    <h3 className="question-text">
+                                        Câu {index + 1}: {item.question}
+                                    </h3>
 
-                                    <div className="question-body">
-                                        <h3 className="question-text">{item.question}</h3>
+                                    <div className="answers-list">
+                                        {item.answers.map((ans, ansIndex) => {
+                                            const isUserAnswer =
+                                                item.answer === ansIndex;
+                                            const isCorrectAnswer =
+                                                item.correctAnswer === ansIndex;
 
-                                        <div className="answers-list">
-                                            {item.answers.map((itemAns, indexAns) => {
-                                                // FIX: Sử dụng === thay vì ==== để so sánh
-                                                const isUserAnswer = item.answer === indexAns;
-                                                const isCorrectAnswer = item.correctAnswer === indexAns;
-                                                const optionLabel = String.fromCharCode(65 + indexAns);
+                                            let cls = "answer-item";
+                                            if (isCorrectAnswer) cls += " answer-correct";
+                                            if (isUserAnswer && !isCorrectAnswer)
+                                                cls += " answer-wrong";
 
-                                                let answerClass = 'answer-item';
-                                                if (isCorrectAnswer) {
-                                                    answerClass += ' answer-correct';
-                                                }
-                                                if (isUserAnswer && !isCorrectAnswer) {
-                                                    answerClass += ' answer-wrong';
-                                                }
-
-                                                return (
-                                                    <div key={indexAns} className={answerClass}>
-                                                        <div className="answer-label">{optionLabel}</div>
-                                                        <div className="answer-text">{itemAns}</div>
-                                                        {isCorrectAnswer && (
-                                                            <div className="answer-badge badge-correct">
-                                                                <span className="badge-icon">✓</span>
-                                                                Đáp án đúng
-                                                            </div>
-                                                        )}
-                                                        {isUserAnswer && !isCorrectAnswer && (
-                                                            <div className="answer-badge badge-wrong">
-                                                                <span className="badge-icon">✗</span>
-                                                                Bạn đã chọn
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
+                                            return (
+                                                <div key={ansIndex} className={cls}>
+                                                    {ans}
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             );
                         })}
-                    </div>
-
-                    {/* Summary Card */}
-                    <div className="summary-card">
-                        <div className="summary-icon">
-                            {isPassed ? '🎉' : '💪'}
-                        </div>
-                        <h3 className="summary-title">
-                            {isPassed ? 'Chúc mừng bạn đã hoàn thành!' : 'Đừng bỏ cuộc!'}
-                        </h3>
-                        <p className="summary-text">
-                            {isPassed 
-                                ? 'Bạn có thể thử các chủ đề khác hoặc làm lại để đạt điểm cao hơn.'
-                                : 'Hãy xem lại các câu sai và thử lại. Bạn sẽ làm được!'}
-                        </p>
-                        <div className="summary-actions">
-                            <Link to="/topic" className="btn btn-outline">
-                                Chọn chủ đề khác
-                            </Link>
-                        </div>
                     </div>
                 </div>
             </div>
