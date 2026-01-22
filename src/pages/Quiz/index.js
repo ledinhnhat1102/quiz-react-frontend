@@ -35,61 +35,53 @@ function Quiz() {
     }, [params.id]);
 
     /* ================= SUBMIT ================= */
-    const handleSubmit = useCallback(
-        async (e = null, autoSubmit = false) => {
-            if (e) e.preventDefault();
-            if (isSubmitting) return;
+    const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    if (isSubmitting) return;
 
-            if (!autoSubmit && Object.keys(selectedAnswers).length < dataQuestions.length) {
-                const confirmSubmit = window.confirm(
-                    `Bạn mới trả lời ${Object.keys(selectedAnswers).length}/${dataQuestions.length} câu. Bạn chắc chắn muốn nộp bài?`
-                );
-                if (!confirmSubmit) return;
-            }
+    if (Object.keys(selectedAnswers).length < dataQuestions.length) {
+        const ok = window.confirm(
+            `Bạn mới trả lời ${Object.keys(selectedAnswers).length}/${dataQuestions.length} câu. Bạn chắc chắn muốn nộp bài?`
+        );
+        if (!ok) return;
+    }
 
-            setIsSubmitting(true);
+    setIsSubmitting(true);
 
-            let answers = [];
-            let correctCount = 0;
+    let correctCount = 0;
 
-            dataQuestions.forEach(q => {
-                const userAnswer =
-                    selectedAnswers[q.id] !== undefined
-                        ? Number(selectedAnswers[q.id])
-                        : -1;
+    const answers = dataQuestions.map(q => {
+        const userAnswer = selectedAnswers[q.id];
 
-                if (userAnswer === q.correctAnswer) correctCount++;
+        if (userAnswer === q.correctAnswer) {
+            correctCount++;
+        }
 
-                answers.push({
-                    questionId: Number(q.id),
-                    answer: userAnswer
-                });
-            });
+        return {
+            questionId: q.id,
+            answer: userAnswer ?? null
+        };
+    });
 
-            const payload = {
-                userId: Number(getCookie("id")),
-                topicId: Number(params.id),
-                answers,
-                score: correctCount,
-                totalQuestions: dataQuestions.length
-            };
+    const payload = {
+        userId: Number(getCookie("id")),
+        topicId: Number(params.id),
+        answers,
+        score: correctCount,
+        totalQuestions: dataQuestions.length,
+        createdAt: new Date().toISOString()
+    };
 
-            try {
-                const res = await createAnswer(payload);
-                if (res?.id) {
-                    navigate(`/result/${res.id}`);
-                } else {
-                    alert("Nộp bài thất bại!");
-                    setIsSubmitting(false);
-                }
-            } catch (err) {
-                console.error(err);
-                alert("Có lỗi xảy ra!");
-                setIsSubmitting(false);
-            }
-        },
-        [dataQuestions, selectedAnswers, params.id, navigate, isSubmitting]
-    );
+    try {
+        const res = await createAnswer(payload);
+        navigate(`/result/${res.id}`);
+    } catch (err) {
+        console.error(err);
+        alert("Có lỗi khi nộp bài");
+        setIsSubmitting(false);
+    }
+};
+
 
     /* ================= TIMER ================= */
     useEffect(() => {
