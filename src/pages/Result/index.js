@@ -18,6 +18,12 @@ function Result() {
             const dataAnswers = await getAnswer(params.id);
             const dataQuestions = await getListQuestion(dataAnswers.topicId);
 
+            // ===== THÊM DEBUG =====
+        console.log("dataAnswers:", dataAnswers);
+        console.log("dataQuestions:", dataQuestions);
+        console.log("answers array:", dataAnswers.answers);
+        // ======================
+
             let correctCount = 0;
             const resultFinal = [];
 
