@@ -59,7 +59,7 @@ function Quiz() {
 
         return {
             questionId: q.id,
-            answer: userAnswer ?? null
+            answer: userAnswer !== undefined ? userAnswer : -1
         };
     });
 
