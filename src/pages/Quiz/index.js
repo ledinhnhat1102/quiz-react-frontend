@@ -58,7 +58,7 @@ function Quiz() {
         }
 
         return {
-            questionId: q.id,
+            questionId: Number(q.id),
             answer: userAnswer !== undefined ? userAnswer : -1
         };
     });
